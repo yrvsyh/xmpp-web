@@ -46,7 +46,7 @@ const onSaveAndLogin = (id) => {
 </script>
 
 <template>
-    <n-modal class="w-72 max-h-96 rounded-lg" id="login-select" v-model:show="show">
+    <NModal class="w-72 max-h-96 rounded-lg" id="login-select" v-model:show="show">
         <div class="bg-slate-100 flex flex-col p-4 gap-4">
             <div class="text-lg text-center flex justify-between px-4">
                 <span>选择登录账号</span>
@@ -58,11 +58,11 @@ const onSaveAndLogin = (id) => {
             </div>
 
             <div class="max-h-96 w-full overflow-auto">
-                <n-radio-group class="w-full flex flex-col" v-model:value="selectedAccountId" name="group">
+                <NRadioGroup class="w-full flex flex-col" v-model:value="selectedAccountId" name="group">
                     <div class="flex flex-col gap-2" v-for="account in accountStore.accounts">
                         <div class="w-full h-12 flex items-center gap-8 p-4 rounded hover:bg-slate-200 cursor-pointer"
                             @click="onItemSelected(account.id)">
-                            <n-radio size="large" :key="account.id" :value="account.id" />
+                            <NRadio size="large" :key="account.id" :value="account.id" />
                             <div class="w-full text-left align-middle">
                                 <div>
                                     {{ `${account.username}@${account.domain}/${account.resource}` }}
@@ -71,15 +71,15 @@ const onSaveAndLogin = (id) => {
                             </div>
                         </div>
                     </div>
-                </n-radio-group>
+                </NRadioGroup>
             </div>
 
             <div class="flex gap-2 justify-end">
-                <n-button type="primary" size="small" @click="onLoginClicked">登录</n-button>
-                <n-button size="small" @click="onEditAccountClick">编辑</n-button>
+                <NButton type="primary" size="small" @click="onLoginClicked">登录</NButton>
+                <NButton size="small" @click="onEditAccountClick">编辑</NButton>
             </div>
         </div>
-    </n-modal>
+    </NModal>
     <Account :id="editingAccountId" v-model:show="showAccountEditor" @on-login="onSaveAndLogin" />
 </template>
 

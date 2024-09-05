@@ -1,6 +1,15 @@
+import xmlFormat from 'xml-formatter'
 import xmpp from '@xmpp/client'
+import { init } from './mucsub'
 
+/**
+ * @type {xmpp.Client | undefined}
+ */
 export let client = undefined
+
+const pp = (el) => {
+    return xmlFormat(el.toString(), { indentation: '  ' })
+}
 
 export async function setup(config) {
     if (client && client.status != "disconnect") {
@@ -9,21 +18,27 @@ export async function setup(config) {
 
     client = xmpp.client(config)
 
-    client.on("online", (jid) => {
-        console.log("xmpp:online:", jid)
+    client.on("send", (el) => {
+        client.emit("debug:send", pp(el))
+        console.log(`<< send <<\n${pp(el)}\n`)
     })
 
-    client.on("offline", (status) => {
-        console.log("xmpp:offline:", status)
+    client.on("stanza", (el) => {
+        client.emit("debug:recv", pp(el))
+        console.log(`>> recv >>\n${pp(el)}\n`)
     })
 
-    client.on("stanza", (stanza) => {
-        console.log("xmpp:stanza:", stanza)
+    client.on("nonza", (el) => {
+        client.emit("debug:recv", pp(el))
+        console.log(`>> recv >>\n${pp(el)}\n`)
     })
 
     client.on("error", (error) => {
-        console.log("xmpp:error:", error)
+        client.emit("debug:error", error)
+        console.log(`>> error <<\n${error}\n`)
     })
+
+    await init(`conference.${config.domain}`)
 
     return client
 }

@@ -3,15 +3,13 @@ import { defineStore } from "pinia"
 
 export const useAccountStore = defineStore("account", () => {
     const accounts = ref({})
+    const lastLoginId = ref("")
 
     const defaultAccount = {
-        name: "",
+        username: "",
         password: "",
         domain: "localhost",
-        host: "localhost",
-        port: 5222,
         resource: "web",
-        ssl: true
     }
     const getAccount = (id) => {
         return accounts.value[id] ?? defaultAccount
@@ -33,5 +31,5 @@ export const useAccountStore = defineStore("account", () => {
         delete accounts.value[id]
     }
 
-    return { accounts, getAccount, saveAccount, updateAccount, deleteAccount }
+    return { accounts, lastLoginId, getAccount, saveAccount, updateAccount, deleteAccount }
 }, { persist: true })

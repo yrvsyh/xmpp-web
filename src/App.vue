@@ -1,26 +1,25 @@
 <script setup>
-import { ref } from 'vue'
-import { NButton } from 'naive-ui'
-import Login from './components/Login.vue'
 import { useUserStore } from './store/user'
+import Sidebar from './components/Sidebar.vue'
+import Debug from './components/Debug.vue'
 
 const userStore = useUserStore()
 
-const show = ref(false)
-
-const onUserLogin = (id) => {
-  userStore.connectAndLogin(id)
-}
 </script>
 
 <template>
-  <div class="w-full h-screen flex justify-center items-center bg-gray-200">
-    <div class="w-[48rem] h-[32rem] bg-slate-50 rounded-lg shadow-lg">
-      <NButton @click="show = true">测试</NButton>
-      <Login v-model:show="show" @on-login="onUserLogin" />
-      <span v-if="userStore.status == 'online'">登录成功</span>
+  <div class="w-full h-screen flex justify-center items-center">
+    <div class="app w-[64rem] h-[48rem] flex gap-2 p-2">
+      <Sidebar />
+
+      <Debug v-if="userStore.currentPage == 'debug'" />
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.app {
+  border-radius: 12px;
+  box-shadow: 0px 0px 32px 2px rgba(128, 128, 128, 0.2);
+}
+</style>

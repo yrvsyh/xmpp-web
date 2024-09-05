@@ -42,36 +42,36 @@ const onCancelClick = () => {
 </script>
 
 <template>
-    <n-modal v-model:show="show">
+    <NModal v-model:show="show">
         <div class="max-w-[400px] min-w-[320px] w-2/5 p-8 bg-slate-50 flex flex-col gap-8 shadow-lg rounded-lg">
             <span class="text-lg text-center">账号配置</span>
-            <n-form label-placement="left" label-width="auto" require-mark-placement="right-hanging">
-                <n-form-item label="username">
-                    <n-input v-model:value="form.username" placeholder="yzy" />
-                </n-form-item>
-                <n-form-item label="password">
-                    <n-input type="password" v-model:value="form.password" placeholder="password" />
-                </n-form-item>
-                <n-form-item label="domain">
-                    <n-input v-model:value="form.domain" placeholder="localhost" />
-                </n-form-item>
-                <n-form-item label="resource">
-                    <n-input v-model:value="form.resource" placeholder="wails" />
-                </n-form-item>
-                <n-form-item label="host">
-                    <n-input v-model:value="form.host" placeholder="127.0.0.1" />
-                </n-form-item>
-                <n-form-item label="port">
-                    <n-input-number v-model:value="form.port" placeholder="5222" />
-                </n-form-item>
-            </n-form>
+            <NForm label-placement="left" label-width="auto" require-mark-placement="right-hanging">
+                <NFormItem label="username">
+                    <NInput v-model:value="form.username" placeholder="yzy" />
+                </NFormItem>
+                <NFormItem label="password">
+                    <NInput type="password" v-model:value="form.password" placeholder="password" />
+                </NFormItem>
+                <NFormItem label="domain">
+                    <NInput v-model:value="form.domain" placeholder="localhost" />
+                </NFormItem>
+                <NFormItem label="resource">
+                    <NInput v-model:value="form.resource" placeholder="wails" />
+                </NFormItem>
+                <NFormItem label="host">
+                    <NInput v-model:value="form.host" placeholder="127.0.0.1" />
+                </NFormItem>
+                <NFormItem label="port">
+                    <NInput-number class="w-full" v-model:value="form.port" placeholder="5222" />
+                </NFormItem>
+            </NForm>
             <div class="flex justify-end gap-4">
-                <n-button @click="onSaveAndLoginClick" type="primary">保存并登录</n-button>
-                <n-button @click="onSaveClick">仅保存</n-button>
-                <n-button @click="onCancelClick">取消</n-button>
+                <NButton @click="onSaveAndLoginClick" type="primary">保存并登录</NButton>
+                <NButton @click="onSaveClick">仅保存</NButton>
+                <NButton @click="onCancelClick">取消</NButton>
             </div>
         </div>
-    </n-modal>
+    </NModal>
 </template>
 
 <style scoped></style>
