@@ -1,27 +1,19 @@
 <script setup>
-import { nextTick, onMounted, ref, toRef, watch, watchEffect } from 'vue'
-import { client } from '../xmpp/client'
-import { useUserStore } from '../store/user'
-import { storeToRefs } from 'pinia'
+import { onUpdated, ref } from 'vue'
+import { useMsgStore } from '../store/msg'
 
-const userStore = useUserStore()
-const { debugMsg: msgList } = storeToRefs(userStore)
+const msgStore = useMsgStore()
 
 const debugContainer = ref(null)
-watch(() => userStore.debugMsg.length, () => {
-    nextTick(() => {
-        debugContainer.value.scrollTop = debugContainer.value.scrollHeight
-    })
-}, { deep: true })
-
-onMounted(() => {
+onUpdated(() => {
     debugContainer.value.scrollTop = debugContainer.value.scrollHeight
 })
+
 </script>
 
 <template>
     <div ref="debugContainer" class="debug w-full h-full flex flex-col overflow-auto p-2">
-        <div v-for="msg in msgList">
+        <div v-for="msg in msgStore.getDebugMsgList()">
             <div class="bg-gray-200 p-2 rounded-md" style="white-space: pre-wrap;">
                 {{ `${msg.time} ${msg.type}:\n\n${msg.msg}` }}
             </div>
@@ -34,5 +26,6 @@ onMounted(() => {
 .debug {
     border-radius: 8px;
     box-shadow: 0px 0px 12px 1px rgba(128, 128, 128, 0.1);
+
 }
 </style>

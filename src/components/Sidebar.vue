@@ -1,11 +1,13 @@
 <script setup>
 import { Icon } from '@vicons/utils'
-import { Chat20Filled, Chat20Regular, ChatMultiple20Regular, ChatMultiple20Filled, Settings20Filled, CodeCircle20Filled, CodeCircle20Regular } from '@vicons/fluent'
+import { Chat20Filled, Chat20Regular, ChatMultiple20Regular, ChatMultiple20Filled, Settings20Filled, CodeCircle20Filled, CodeCircle20Regular, Settings20Regular, SignOut20Regular, SignOut20Filled } from '@vicons/fluent'
 import { useUserStore } from '../store/user'
 import { ref } from 'vue'
 import Login from './Login.vue'
+import { useAppStore } from '../store/app'
 
 const userStore = useUserStore()
+const appStore = useAppStore()
 
 const showLogin = ref(false)
 
@@ -21,8 +23,8 @@ const onUserLogin = (id) => {
 
         </div>
         <div class="pages flex flex-col items-center gap-4">
-            <Icon class="icon" size="32" @click="userStore.currentPage = 'chat'">
-                <div v-if="userStore.currentPage == 'chat'">
+            <Icon class="icon" size="32" @click="appStore.currentPage = 'chat'">
+                <div v-if="appStore.currentPage == 'chat'">
                     <Chat20Filled color="#18a058" />
                 </div>
                 <div v-else>
@@ -30,8 +32,8 @@ const onUserLogin = (id) => {
                     <Chat20Filled class="filled-icon" color="#18a058" />
                 </div>
             </Icon>
-            <Icon class="icon" size="32" @click="userStore.currentPage = 'group'">
-                <div v-if="userStore.currentPage == 'group'">
+            <Icon class="icon" size="32" @click="appStore.currentPage = 'group'">
+                <div v-if="appStore.currentPage == 'group'">
                     <ChatMultiple20Filled color="#18a058" />
                 </div>
                 <div v-else>
@@ -39,8 +41,8 @@ const onUserLogin = (id) => {
                     <ChatMultiple20Filled class="filled-icon" color="#18a058" />
                 </div>
             </Icon>
-            <Icon class="icon" size="32" @click="userStore.currentPage = 'debug'">
-                <div v-if="userStore.currentPage == 'debug'">
+            <Icon class="icon" size="32" @click="appStore.currentPage = 'debug'">
+                <div v-if="appStore.currentPage == 'debug'">
                     <CodeCircle20Filled color="#18a058" />
                 </div>
                 <div v-else>
@@ -49,9 +51,23 @@ const onUserLogin = (id) => {
                 </div>
             </Icon>
         </div>
-        <Icon size="28">
-            <Settings20Filled color="#18a058" />
-        </Icon>
+        <div class="flex flex-col gap-4">
+            <Icon class="icon" size="28" @click="appStore.currentPage = 'setting'">
+                <div v-if="appStore.currentPage == 'setting'">
+                    <Settings20Filled color="#18a058" />
+                </div>
+                <div v-else>
+                    <Settings20Regular class="regular-icon" color="#18a058" />
+                    <Settings20Filled class="filled-icon" color="#18a058" />
+                </div>
+            </Icon>
+            <Icon class="icon" size="28" @click="userStore.logoutAndDisconnect">
+                <div>
+                    <SignOut20Regular class="regular-icon" color="#18a058" />
+                    <SignOut20Filled class="filled-icon" color="#18a058" />
+                </div>
+            </Icon>
+        </div>
     </div>
     <Login v-model:show="showLogin" @on-login="onUserLogin" />
 </template>

@@ -23,10 +23,12 @@ export async function init(svc) {
                     ?.getChild("message")
                 if (message) {
                     client.emit("mucsub:message", message)
-                    if (message.getAttr("type" == "groupchat")) {
-                        const from = message.getAttr("from")
-                        const to = message.getAttr("to")
-                        client.emit("mucsub:message:groupchat", from, to, message.getChildText("body"))
+                    if (message.getAttr("type") == "groupchat") {
+                        const from = jid(message.getAttr("from"))
+
+                        const group = from.local
+                        const nick = from.resource
+                        client.emit("mucsub:message:groupchat", group, nick, message.getChildText("body"))
                     }
                 }
             }

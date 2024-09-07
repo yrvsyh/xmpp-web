@@ -7,15 +7,11 @@ export const useAppStore = defineStore("app", () => {
         height: 600,
     })
 
-    const count = ref(0)
+    const currentUserId = ref("")
+    const currentPage = ref("chat")
 
-    const getCount = () => {
-        return count.value
+    return {
+        currentUserId,
+        currentPage,
     }
-
-    const increment = () => {
-        count.value++
-    }
-
-    return { settings, count, getCount, increment }
 }, { persist: true })

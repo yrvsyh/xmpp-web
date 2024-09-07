@@ -1,9 +1,11 @@
 <script setup>
 import { useUserStore } from './store/user'
 import Sidebar from './components/Sidebar.vue'
-import Debug from './components/Debug.vue'
+import DebugPage from './components/DebugPage.vue'
+import GroupChatPage from './components/GroupChatPage.vue'
+import { useAppStore } from './store/app'
 
-const userStore = useUserStore()
+const appStore = useAppStore()
 
 </script>
 
@@ -12,7 +14,8 @@ const userStore = useUserStore()
     <div class="app w-[64rem] h-[48rem] flex gap-2 p-2">
       <Sidebar />
 
-      <Debug v-if="userStore.currentPage == 'debug'" />
+      <GroupChatPage v-show="appStore.currentPage == 'group'"></GroupChatPage>
+      <DebugPage v-show="appStore.currentPage == 'debug'" />
     </div>
   </div>
 </template>

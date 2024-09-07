@@ -3,7 +3,6 @@ import { defineStore } from "pinia"
 
 export const useAccountStore = defineStore("account", () => {
     const accounts = ref({})
-    const lastLoginId = ref("")
 
     const defaultAccount = {
         username: "",
@@ -31,5 +30,11 @@ export const useAccountStore = defineStore("account", () => {
         delete accounts.value[id]
     }
 
-    return { accounts, lastLoginId, getAccount, saveAccount, updateAccount, deleteAccount }
+    return {
+        accounts,
+        getAccount,
+        saveAccount,
+        updateAccount,
+        deleteAccount,
+    }
 }, { persist: true })
