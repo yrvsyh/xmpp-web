@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { client } from '../xmpp/client'
 import GroupList from './GroupList.vue'
 import GroupChat from './GroupChat.vue'
@@ -46,10 +46,14 @@ const onRoomSelected = (room) => {
     selectedRoom.value = room
 }
 
+onMounted(() => {
+    msgMap.value
+})
+
 </script>
 
 <template>
-    <div class="flex gap-2">
+    <div class="w-full flex gap-2">
         <GroupList :roomList="roomList" @room-selected="onRoomSelected" @join-room-clicked="onJoinRoomClicked" />
         <GroupChat :room="selectedRoom" :msgList="msgList" />
     </div>

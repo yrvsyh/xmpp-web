@@ -95,3 +95,12 @@ export async function getRoomMembers(room) {
 
     return members
 }
+
+export default {
+    init,
+    joinRoom,
+    leaveRoom,
+    sendGroupMsg,
+    getJoinedRooms,
+    getRoomMembers,
+}

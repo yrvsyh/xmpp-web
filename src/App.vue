@@ -11,7 +11,7 @@ const appStore = useAppStore()
 
 <template>
   <div class="w-full h-screen flex justify-center items-center">
-    <div class="app w-[64rem] h-[48rem] flex gap-2 p-2">
+    <div class="app w-[68rem] h-[48rem] flex">
       <Sidebar />
 
       <GroupChatPage v-show="appStore.currentPage == 'group'"></GroupChatPage>
@@ -22,7 +22,12 @@ const appStore = useAppStore()
 
 <style scoped>
 .app {
+  /* background-color: #e8eff8; */
+  background-color: #e4ecea;
   border-radius: 12px;
-  box-shadow: 0px 0px 32px 2px rgba(128, 128, 128, 0.2);
+  border: 1px solid lightgray;
+  box-shadow: 0px 0px 16px 4px lightgray;
+  padding: 6px;
+  gap: 6px;
 }
 </style>

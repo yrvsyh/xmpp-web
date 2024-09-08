@@ -12,12 +12,33 @@ onUpdated(() => {
 </script>
 
 <template>
-    <div ref="debugContainer" class="debug w-full h-full flex flex-col overflow-auto p-2">
-        <div v-for="msg in msgStore.getDebugMsgList()">
-            <div class="bg-gray-200 p-2 rounded-md" style="white-space: pre-wrap;">
-                {{ `${msg.time} ${msg.type}:\n\n${msg.msg}` }}
+    <div class="debug flex flex-col w-full h-full">
+        <div class="min-h-12 py-2 px-4 border-b border-gray-300 flex items-center">
+            Debug
+        </div>
+        <div class="overflow-auto mb-4">
+            <div ref="debugContainer" class="message-container">
+                <div v-for="msg in msgStore.getDebugMsgList()">
+                    <div v-if="msg.type == 'send'" class="flex gap-2 p-2">
+                        <div class="avatar"></div>
+                        <div class="flex flex-col">
+                            <div>{{ msg.time }}</div>
+                            <div class="message" style="white-space: pre-wrap;">
+                                {{ msg.msg }}
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else class="flex justify-end gap-2 p-2 w-full">
+                        <div class="flex flex-col items-end w-full">
+                            <div>{{ msg.time }}</div>
+                            <div class="message" style="white-space: pre-wrap;">
+                                {{ msg.msg }}
+                            </div>
+                        </div>
+                        <div class="avatar"></div>
+                    </div>
+                </div>
             </div>
-            <br>
         </div>
     </div>
 </template>
@@ -25,7 +46,30 @@ onUpdated(() => {
 <style scoped>
 .debug {
     border-radius: 8px;
-    box-shadow: 0px 0px 12px 1px rgba(128, 128, 128, 0.1);
+    background-color: #fcfcfc;
+    overflow: hidden;
+}
 
+.message-container {
+    display: flex;
+    flex-direction: column;
+    padding: .5rem;
+    background-color: #fcfcfc;
+    border-radius: 8px;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-image: url('../assets/avatar.png');
+    background-size: cover;
+}
+
+.message {
+    padding: .5rem;
+    background-color: lightgray;
+    border-radius: 8px;
+    max-width: 80%;
 }
 </style>

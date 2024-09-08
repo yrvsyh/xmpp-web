@@ -14,7 +14,6 @@ const showLogin = ref(false)
 const onUserLogin = (id) => {
     userStore.connectAndLogin(id)
 }
-
 </script>
 
 <template>
@@ -52,7 +51,7 @@ const onUserLogin = (id) => {
             </Icon>
         </div>
         <div class="flex flex-col gap-4">
-            <Icon class="icon" size="28" @click="appStore.currentPage = 'setting'">
+            <Icon class="icon" size="26" @click="appStore.currentPage = 'setting'">
                 <div v-if="appStore.currentPage == 'setting'">
                     <Settings20Filled color="#18a058" />
                 </div>
@@ -74,9 +73,9 @@ const onUserLogin = (id) => {
 
 <style scoped>
 .sidebar {
-    border-radius: 8px;
-    box-shadow: 0px 0px 12px 1px rgba(128, 128, 128, 0.1);
-    width: 56px;
+    /* border-radius: 8px; */
+    /* box-shadow: 0px 0px 12px 1px rgba(128, 128, 128, 0.1); */
+    width: 48px;
     padding: 10px 12px 10px 10px;
 }
 

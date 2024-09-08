@@ -44,11 +44,14 @@ export async function setup(config) {
 }
 
 export async function login() {
-    client.once("online", () => {
-        client.send(xmpp.xml("presence"))
+    const online = new Promise((resolve, reject) => {
+        client.once("online", () => {
+            client.send(xmpp.xml("presence"))
+                .then(resolve).catch(reject)
+        })
     })
-    let jid = await client.start()
-    await client.send(xmpp.xml("presence"))
+    const jid = await client.start()
+    await online
     return jid
 }
 
