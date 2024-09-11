@@ -75,6 +75,7 @@ const onItemClicked = (room) => {
     border-radius: 50%;
     background-image: url('../assets/avatar.png');
     background-size: cover;
+    align-self: center;
 }
 
 .message-text {

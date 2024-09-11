@@ -2,7 +2,7 @@
 import { Icon } from '@vicons/utils'
 import { Chat20Filled, Chat20Regular, ChatMultiple20Regular, ChatMultiple20Filled, Settings20Filled, CodeCircle20Filled, CodeCircle20Regular, Settings20Regular, SignOut20Regular, SignOut20Filled } from '@vicons/fluent'
 import { useUserStore } from '../store/user'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import Login from './Login.vue'
 import { useAppStore } from '../store/app'
 
@@ -14,10 +14,36 @@ const showLogin = ref(false)
 const onUserLogin = (id) => {
     userStore.connectAndLogin(id)
 }
+
+
+let isDragging = false
+let x = 0
+let y = 0
+const sidebar = ref(null)
+onMounted(() => {
+    sidebar.value.onmousedown = (e) => {
+        isDragging = true
+    }
+    window.onmouseup = (e) => {
+        isDragging = false
+    }
+    window.onmousemove = (e) => {
+        if (isDragging) {
+            x += e.movementX
+            if (x < 0) x = 0
+            y += e.movementY
+            if (y < 0) y = 0
+            const app = document.querySelector('.app')
+            app.style.left = x + 'px'
+            app.style.top = y + 'px'
+        }
+    }
+
+})
 </script>
 
 <template>
-    <div class="sidebar flex flex-col items-center">
+    <div ref="sidebar" class="sidebar flex flex-col items-center">
         <div class="avatar" @click="showLogin = true">
 
         </div>

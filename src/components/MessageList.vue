@@ -16,7 +16,7 @@ onUpdated(() => {
 
 <template>
     <div ref="messageListView" class="overflow-y-auto mb-4 h-full w-full">
-        <div v-for="msg in props.msgList">
+        <div v-for="msg in props.msgList" class="p-2">
             <div v-if="msg.type == 'recv'" class="flex gap-4 p-2">
                 <div class="avatar"></div>
                 <div class="flex flex-col gap-2">

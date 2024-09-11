@@ -10,7 +10,8 @@ const appStore = useAppStore()
 </script>
 
 <template>
-  <div class="w-full h-screen flex justify-center items-center">
+  <!-- <div class="w-full h-screen flex justify-center items-center"> -->
+  <div class="w-full h-screen">
     <div class="app flex">
       <Sidebar />
 
@@ -30,10 +31,13 @@ const appStore = useAppStore()
   padding: 6px;
   gap: 6px;
 
-  width: 100%;
-  height: 100%;
+  /* width: 100%;
+  height: 100%; */
 
-  /* width: 68rem;
-  height: 48rem; */
+  position: absolute;
+  resize: both;
+
+  min-width: 68rem;
+  min-height: 48rem;
 }
 </style>

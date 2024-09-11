@@ -40,7 +40,7 @@ const onEnterPressed = (e) => {
         <!-- <div class="border-y border-gray-300" /> -->
         <div class="msg-input">
             <input v-model="msg" :onkeypress="onEnterPressed"></input>
-            <NButton type="primary" @click="onSendClick">发送</NButton>
+            <NButton type="primary" size="small" @click="onSendClick">发送</NButton>
         </div>
     </div>
 </template>
