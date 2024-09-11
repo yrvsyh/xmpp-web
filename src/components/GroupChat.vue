@@ -1,16 +1,30 @@
 <script setup>
-import { NButton, NList, NListItem } from 'naive-ui'
-import { ref } from 'vue'
+import { NButton } from 'naive-ui'
+import { computed, ref } from 'vue'
 import mucsub from '../xmpp/mucsub'
+import MessageList from './MessageList.vue'
+import { useMsgStore } from '../store/msg'
 
 const props = defineProps({
-    selectedRoom: String,
-    msgList: Object,
+    room: Object,
+})
+
+const msgStore = useMsgStore()
+
+const msgList = computed(() => {
+    const msgs = msgStore.getGroupMsgList(props.room.name)
+    return msgs.map((msg) => {
+        return {
+            ...msg,
+            type: msg.username == props.room.nick ? "send" : "recv"
+        }
+    })
 })
 
 const msg = ref("")
 const onSendClick = async () => {
-    mucsub.sendGroupMsg(props.selectedRoom, msg.value)
+    await mucsub.sendGroupMsg(props.room.name, msg.value)
+    msg.value = ""
 }
 const onEnterPressed = (e) => {
     if (e.which === 13 && !e.shiftKey) {
@@ -21,14 +35,8 @@ const onEnterPressed = (e) => {
 </script>
 
 <template>
-    <div class="chat h-full w-full flex flex-col p-2">
-        <div class="h-full">
-            <n-list>
-                <n-list-item v-for="msg in props.msgList">
-                    {{ msg.body }}
-                </n-list-item>
-            </n-list>
-        </div>
+    <div class="chat h-full flex flex-col p-2 w-full">
+        <MessageList :msgList="msgList" />
         <!-- <div class="border-y border-gray-300" /> -->
         <div class="msg-input">
             <input v-model="msg" :onkeypress="onEnterPressed"></input>

@@ -1,60 +1,43 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
-import { client } from '../xmpp/client'
+import { computed, ref, watch } from 'vue'
 import GroupList from './GroupList.vue'
 import GroupChat from './GroupChat.vue'
 import { useUserStore } from '../store/user'
+import { useMsgStore } from '../store/msg'
+import { getUserSubscriptions } from '../xmpp/api'
 
 const userStore = useUserStore()
+const msgStore = useMsgStore()
 
-const selectedRoom = ref("")
+const selectedRoom = ref({})
 
-const msgMap = ref({})
+const roomList = ref([])
 
-const roomList = computed(() => {
-    return Object.keys(msgMap.value).map((room) => {
-        const lastMsg = msgMap.value[room][msgMap.value[room].length - 1]
-        return {
-            room,
-            lastMsg,
-        }
-    })
-})
-
-const msgList = computed(() => {
-    if (!selectedRoom.value) return []
-    return msgMap.value[selectedRoom.value] ||= []
-})
-
-watch(() => userStore.status, (n, o) => {
-    if (n == "setup") {
-        client.on("mucsub:message:groupchat", (group, nick, msg) => {
-            const time = dayjs().format("HH:mm:ss")
-
-            const msgList = msgMap.value[group] ||= []
-            msgList.push({ nick, msg, time })
-        })
+watch(() => userStore.jid, async (n, o) => {
+    if (n) {
+        roomList.value = await getUserSubscriptions(n.local)
+    } else {
+        roomList.value = []
     }
 })
 
+// const roomList = computed(async () => {
+//     console.log(userStore.jid.local)
+//     return await getUserSubscriptions('yzy')
+// })
+
 const onJoinRoomClicked = () => {
     const room = crypto.randomUUID().substring(0, 8)
-    msgMap.value[room] = ["add room test"]
 }
-
-const onRoomSelected = (room) => {
-    selectedRoom.value = room
-}
-
-onMounted(() => {
-    msgMap.value
-})
-
 </script>
 
 <template>
-    <div class="w-full flex gap-2">
-        <GroupList :roomList="roomList" @room-selected="onRoomSelected" @join-room-clicked="onJoinRoomClicked" />
-        <GroupChat :room="selectedRoom" :msgList="msgList" />
+    <div class="group-chat-page flex gap-2 w-full">
+        <GroupList :roomList="roomList" v-model:selectedRoom="selectedRoom" @join-room-clicked="onJoinRoomClicked" />
+        <GroupChat :room="selectedRoom" />
     </div>
 </template>
+
+<style scoped>
+.group-chat-page {}
+</style>

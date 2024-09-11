@@ -75,6 +75,7 @@ const onUserLogin = (id) => {
 .sidebar {
     /* border-radius: 8px; */
     /* box-shadow: 0px 0px 12px 1px rgba(128, 128, 128, 0.1); */
+    max-width: 48px;
     width: 48px;
     padding: 10px 12px 10px 10px;
 }

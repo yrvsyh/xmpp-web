@@ -1,7 +1,8 @@
 <script setup>
 import { NButton } from 'naive-ui'
 import { useUserStore } from '../store/user'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useMsgStore } from '../store/msg'
 
 const emit = defineEmits(['roomSelected', 'joinRoomClicked'])
 
@@ -9,30 +10,48 @@ const props = defineProps({
     roomList: Array
 })
 
-const onItemClicked = (target) => {
-    emit('roomSelected', target)
+const selectedRoom = defineModel("selectedRoom", {
+    type: Object,
+    default: null,
+})
+
+const msgStore = useMsgStore()
+
+const lastMsg = (room) => {
+    const msgs = msgStore.getGroupMsgList(room.name)
+    return msgs[msgs.length - 1]
+}
+
+const onItemClicked = (room) => {
+    selectedRoom.value = room
+    emit('roomSelected', room)
 }
 </script>
 
 <template>
-    <div class="contact-list flex flex-col gap-2">
+    <div class="contact-list flex flex-col gap-1">
         <!-- <NButton @click="emit('joinRoomClicked')">
             加入群聊
         </NButton> -->
-        <div class="h-full flex flex-col gap-1 overflow-auto">
-            <div class="flex flex-col h-12 p-2 rounded cursor-pointer" @click="emit('roomSelected', room.room)"
-                v-for="room in props.roomList">
+        <div :class="['contact-item', 'flex', 'rounded', 'p-2', 'gap-4', 'h-14', { 'contact-item-active': room === selectedRoom }]"
+            @click="onItemClicked(room)" v-for="room in props.roomList">
+            <!-- <div class="flex items-start gap-4"> -->
+            <div class="avatar">
+
+            </div>
+            <div class="flex flex-col min-w-0">
                 <div>
-                    {{ room.room }} {{ room.lastMsg.time }}
+                    {{ room.name }}
                 </div>
-                <div>
-                    {{ room.lastMsg.nick }}:
-                    {{ room.lastMsg.msg }}
+                <div class="message-text" v-if="lastMsg(room)">
+                    {{ lastMsg(room).username }}: {{ lastMsg(room).msg }}
                 </div>
             </div>
+            <!-- </div> -->
         </div>
     </div>
 </template>
+
 <style scoped>
 .contact-list {
     width: 20rem;
@@ -41,9 +60,26 @@ const onItemClicked = (target) => {
     padding: 4px;
 }
 
-.contact-item-active {}
+.contact-item-active {
+    background-color: #eaebeb;
+}
 
 .contact-item:hover {
     background-color: #eaebeb;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    border-radius: 50%;
+    background-image: url('../assets/avatar.png');
+    background-size: cover;
+}
+
+.message-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 </style>
