@@ -1,10 +1,21 @@
 <script setup>
-import { Icon } from '@vicons/utils'
-import { Chat20Filled, Chat20Regular, ChatMultiple20Regular, ChatMultiple20Filled, Settings20Filled, CodeCircle20Filled, CodeCircle20Regular, Settings20Regular, SignOut20Regular, SignOut20Filled } from '@vicons/fluent'
-import { useUserStore } from '../store/user'
-import { onMounted, ref } from 'vue'
-import Login from './Login.vue'
-import { useAppStore } from '../store/app'
+import { Icon } from "@vicons/utils"
+import {
+    Chat20Filled,
+    Chat20Regular,
+    ChatMultiple20Regular,
+    ChatMultiple20Filled,
+    Settings20Filled,
+    CodeCircle20Filled,
+    CodeCircle20Regular,
+    Settings20Regular,
+    SignOut20Regular,
+    SignOut20Filled,
+} from "@vicons/fluent"
+import { useUserStore } from "../store/user"
+import { onMounted, ref } from "vue"
+import Login from "./Login.vue"
+import { useAppStore } from "../store/app"
 
 const userStore = useUserStore()
 const appStore = useAppStore()
@@ -15,7 +26,7 @@ const onUserLogin = (id) => {
     userStore.connectAndLogin(id)
 }
 
-
+let handle = null
 let isDragging = false
 let x = 0
 let y = 0
@@ -23,30 +34,31 @@ const sidebar = ref(null)
 onMounted(() => {
     sidebar.value.onmousedown = (e) => {
         isDragging = true
+        handle = window.onmousemove = (e) => {
+            if (isDragging) {
+                x += e.movementX
+                if (x < 0) x = 0
+                y += e.movementY
+                if (y < 0) y = 0
+                const app = document.querySelector(".app")
+                app.style.left = x + "px"
+                app.style.top = y + "px"
+            }
+        }
     }
     window.onmouseup = (e) => {
         isDragging = false
-    }
-    window.onmousemove = (e) => {
-        if (isDragging) {
-            x += e.movementX
-            if (x < 0) x = 0
-            y += e.movementY
-            if (y < 0) y = 0
-            const app = document.querySelector('.app')
-            app.style.left = x + 'px'
-            app.style.top = y + 'px'
+        if (handle) {
+            window.removeEventListener("mousemove", handle)
+            handle = null
         }
     }
-
 })
 </script>
 
 <template>
     <div ref="sidebar" class="sidebar flex flex-col items-center">
-        <div class="avatar" @click="showLogin = true">
-
-        </div>
+        <div class="avatar" @click="showLogin = true"></div>
         <div class="pages flex flex-col items-center gap-4">
             <Icon class="icon" size="32" @click="appStore.currentPage = 'chat'">
                 <div v-if="appStore.currentPage == 'chat'">
@@ -57,16 +69,27 @@ onMounted(() => {
                     <Chat20Filled class="filled-icon" color="#18a058" />
                 </div>
             </Icon>
-            <Icon class="icon" size="32" @click="appStore.currentPage = 'group'">
+            <Icon
+                class="icon"
+                size="32"
+                @click="appStore.currentPage = 'group'"
+            >
                 <div v-if="appStore.currentPage == 'group'">
                     <ChatMultiple20Filled color="#18a058" />
                 </div>
                 <div v-else>
-                    <ChatMultiple20Regular class="regular-icon" color="#18a058" />
+                    <ChatMultiple20Regular
+                        class="regular-icon"
+                        color="#18a058"
+                    />
                     <ChatMultiple20Filled class="filled-icon" color="#18a058" />
                 </div>
             </Icon>
-            <Icon class="icon" size="32" @click="appStore.currentPage = 'debug'">
+            <Icon
+                class="icon"
+                size="32"
+                @click="appStore.currentPage = 'debug'"
+            >
                 <div v-if="appStore.currentPage == 'debug'">
                     <CodeCircle20Filled color="#18a058" />
                 </div>
@@ -77,7 +100,11 @@ onMounted(() => {
             </Icon>
         </div>
         <div class="flex flex-col gap-4">
-            <Icon class="icon" size="26" @click="appStore.currentPage = 'setting'">
+            <Icon
+                class="icon"
+                size="26"
+                @click="appStore.currentPage = 'setting'"
+            >
                 <div v-if="appStore.currentPage == 'setting'">
                     <Settings20Filled color="#18a058" />
                 </div>
@@ -111,7 +138,7 @@ onMounted(() => {
     height: 36px;
     flex: 0 0 36px;
     border-radius: 50%;
-    background-image: url('../assets/avatar.png');
+    background-image: url("../assets/avatar.png");
     background-size: cover;
 }
 

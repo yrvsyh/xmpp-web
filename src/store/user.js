@@ -1,4 +1,4 @@
-import { ref } from "vue"
+import { ref, watchEffect } from "vue"
 import { defineStore } from "pinia"
 import { useAccountStore } from "./account"
 import { client, setup, login, logout } from "../xmpp/client"
@@ -15,6 +15,10 @@ export const useUserStore = defineStore(
         const jid = ref("")
         const user = ref({})
         const status = ref("")
+
+        watchEffect(() => {
+            document.title = `XMPP Web - ${jid.value || ""}`
+        })
 
         const connectAndLogin = async (id) => {
             user.value = accountStore.getAccount(id)

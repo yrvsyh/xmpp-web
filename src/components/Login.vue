@@ -1,23 +1,23 @@
 <script setup>
-import { NModal, NButton, NRadioGroup, NRadio } from 'naive-ui'
-import Account from './Account.vue'
-import { ref } from 'vue'
-import { AddCircle32Filled } from '@vicons/fluent'
-import { Icon } from '@vicons/utils'
-import { useAccountStore } from '../store/account'
+import { NModal, NButton, NRadioGroup, NRadio } from "naive-ui"
+import Account from "./Account.vue"
+import { ref } from "vue"
+import { AddCircle32Filled } from "@vicons/fluent"
+import { Icon } from "@vicons/utils"
+import { useAccountStore } from "../store/account"
 
-const emit = defineEmits(['onLogin'])
+const emit = defineEmits(["onLogin"])
 
 const show = defineModel("show", {
     type: Boolean,
-    default: false
+    default: false,
 })
 
 const accountStore = useAccountStore()
 
-const editingAccountId = ref('')
+const editingAccountId = ref("")
 const showAccountEditor = ref(false)
-const selectedAccountId = ref('')
+const selectedAccountId = ref("")
 
 const onItemSelected = (id) => {
     selectedAccountId.value = id
@@ -25,7 +25,7 @@ const onItemSelected = (id) => {
 }
 
 const onAddAccountClick = () => {
-    editingAccountId.value = ''
+    editingAccountId.value = ""
     showAccountEditor.value = true
 }
 
@@ -35,7 +35,7 @@ const onEditAccountClick = () => {
 }
 
 const onLoginClicked = () => {
-    emit('onLogin', selectedAccountId.value)
+    emit("onLogin", selectedAccountId.value)
     show.value = false
 }
 
@@ -46,7 +46,11 @@ const onSaveAndLogin = (id) => {
 </script>
 
 <template>
-    <NModal class="w-72 max-h-96 rounded-lg" id="login-select" v-model:show="show">
+    <NModal
+        class="w-72 max-h-96 rounded-lg"
+        id="login-select"
+        v-model:show="show"
+    >
         <div class="bg-slate-100 flex flex-col p-4 gap-4">
             <div class="text-lg text-center flex justify-between px-4">
                 <span>选择登录账号</span>
@@ -58,16 +62,35 @@ const onSaveAndLogin = (id) => {
             </div>
 
             <div class="max-h-96 w-full overflow-auto">
-                <NRadioGroup class="w-full flex flex-col" v-model:value="selectedAccountId" name="group">
-                    <div class="flex flex-col gap-2" v-for="account in accountStore.accounts">
-                        <div class="w-full h-12 flex items-center gap-8 p-4 rounded hover:bg-slate-200 cursor-pointer"
-                            @click="onItemSelected(account.id)">
-                            <NRadio size="large" :key="account.id" :value="account.id" />
+                <NRadioGroup
+                    class="w-full flex flex-col"
+                    v-model:value="selectedAccountId"
+                    name="group"
+                >
+                    <div
+                        class="flex flex-col gap-2"
+                        v-for="account in accountStore.accounts"
+                    >
+                        <div
+                            class="w-full h-12 flex items-center gap-8 p-4 rounded hover:bg-slate-200 cursor-pointer"
+                            @click="onItemSelected(account.id)"
+                        >
+                            <div class="shrink-0">
+                                <NRadio
+                                    size="large"
+                                    :key="account.id"
+                                    :value="account.id"
+                                />
+                            </div>
                             <div class="w-full text-left align-middle">
                                 <div>
-                                    {{ `${account.username}@${account.domain}/${account.resource}` }}
+                                    {{
+                                        `${account.username}@${account.domain}/${account.resource}`
+                                    }}
                                 </div>
-                                <div class="text-right text-gray-300"> {{ `${account.host}:${account.port}` }} </div>
+                                <div class="text-right text-gray-300">
+                                    {{ `${account.host}:${account.port}` }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -75,12 +98,18 @@ const onSaveAndLogin = (id) => {
             </div>
 
             <div class="flex gap-2 justify-end">
-                <NButton type="primary" size="small" @click="onLoginClicked">登录</NButton>
+                <NButton type="primary" size="small" @click="onLoginClicked"
+                    >登录</NButton
+                >
                 <NButton size="small" @click="onEditAccountClick">编辑</NButton>
             </div>
         </div>
     </NModal>
-    <Account :id="editingAccountId" v-model:show="showAccountEditor" @on-login="onSaveAndLogin" />
+    <Account
+        :id="editingAccountId"
+        v-model:show="showAccountEditor"
+        @on-login="onSaveAndLogin"
+    />
 </template>
 
 <style scoped></style>

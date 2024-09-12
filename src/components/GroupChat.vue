@@ -4,12 +4,14 @@ import { computed, ref } from 'vue'
 import mucsub from '../xmpp/mucsub'
 import MessageList from './MessageList.vue'
 import { useMsgStore } from '../store/msg'
+import { useUserStore } from '../store/user'
 
 const props = defineProps({
     room: Object,
 })
 
 const msgStore = useMsgStore()
+const userStore = useUserStore()
 
 const msgList = computed(() => {
     const msgs = msgStore.getGroupMsgList(props.room.name)
@@ -23,7 +25,15 @@ const msgList = computed(() => {
 
 const msg = ref("")
 const onSendClick = async () => {
-    await mucsub.sendGroupMsg(props.room.name, msg.value)
+    const message = {
+        messageId: String(Date.now()),
+        senderId: userStore.user.username,
+        senderAvatar: "lib/asset/male_1.png",
+        msgVersion: 0,
+        text: msg.value,
+    }
+    await mucsub.sendGroupMsg(props.room.name, JSON.stringify(message))
+    // await mucsub.sendGroupMsg(props.room.name, msg.value)
     msg.value = ""
 }
 const onEnterPressed = (e) => {
